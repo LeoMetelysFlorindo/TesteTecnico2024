@@ -1,0 +1,230 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+using SUMUP.API.Repository;
+using System.Reflection;
+using System.IO;
+using System;
+using SUMUP.API.Models;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Cors.Infrastructure;
+using Owin;
+using Microsoft.Owin.Security.OAuth;
+using Microsoft.Owin;
+using Microsoft.EntityFrameworkCore;
+
+namespace SUMUP.API
+{
+    public class Startup
+    {
+        private readonly IConfiguration _configuration;
+        
+        public Startup(IConfiguration configuration)
+        {   
+            Configuration = configuration;
+            _configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+
+            var key = Base64UrlEncoder.DecodeBytes("1234567890123456789");
+            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(key);
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc(options => options.EnableEndpointRouting = false);            
+            services.AddControllers();
+           
+            // 28/05/2021 15:57h
+            // Leonardo Metelis 
+            // Acrescentar essas duas instruções para que os nomes das models no retorno JSON venham em 
+            // maiúsculas, como definido nas models             
+            services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNameCaseInsensitive = false);
+            services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+            services.AddSingleton(Configuration);
+
+            /// Leitura de dados de conexão do banco em JSON
+            ///  Leonardo Metelis
+            ///  22/05/2021 09:45h
+            Configuration.GetConnectionString("ConnectionStrings:MY_SQL_CONNECTIONSTRING");
+
+            string mySqlConnection = "server=localhost;port=3306;database=empresa;user=DESKTOP-A02DVPT;Password=937206;Persist Security Info=false;Connection Timeout=300";
+
+            services.AddDbContextPool<ApplicationDbContext>(options => options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
+
+            services.AddControllers();
+
+            // 31/05/2021 13:52pm
+            // Leonardo Metelis
+            // Necessário para registro de leitura de usuário e senha            
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            //// 18/05/2021 13:11h
+            //// Leonardo Metelis
+            //// Autenticação de abertura via Token
+            services.AddAuthentication
+                 (JwtBearerDefaults.AuthenticationScheme)
+                 .AddJwtBearer(options =>
+                 {
+                     options.TokenValidationParameters = new TokenValidationParameters
+                     {
+                         ValidateIssuer = true,
+                         ValidateAudience = true,
+                         ValidateLifetime = true,
+                         ValidateIssuerSigningKey = true,
+
+                         ValidIssuer = Configuration["Jwt:Issuer"],
+                         ValidAudience = Configuration["Jwt:Audience"],
+                         IssuerSigningKey = new SymmetricSecurityKey
+                       (Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                     };
+                 });
+                               
+
+            //================================================================================    
+            // 18/05/2021 12:14h
+            // Leonardo Metelis
+            // Modificações para adicionar segurança na abertura das APIs
+            services.AddSwaggerGen(c =>
+            {               
+                var Info = new OpenApiInfo
+                {
+                    Version = "v1.5",
+                    Title = "API RESTFUL",
+                    Description = "TESTE TÉCNICO",
+                    //TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "By MLMF MAO - Brazil.",
+                        Email = string.Empty,
+                        Url = new Uri("https://twitter.com/Leo_Metelys"),
+                    },
+                   
+
+                };
+
+                c.SwaggerDoc("v1",
+                    Info);
+
+                // Locate the XML file being generated by ASP.NET...
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                //... and tell Swagger to use those XML comments.
+                c.IncludeXmlComments(xmlPath);
+
+                // add JWT Authentication
+                // 18/05/2021 13:05h 
+                // Leonardo Metelis
+                // Autenticação de abertura via usuário e senha 
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "JWT",
+                    Description = "JWT authentication with bearer token",                    
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer", // must be lower case
+                    BearerFormat = "Bearer [token]",
+                    Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme                       
+                    }
+                };
+                c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {securityScheme, new string[] { }}
+                });
+
+            });
+                        
+
+            // Configurando o serviço de documentação do Swagger
+            services.AddSwaggerGen();
+
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            // 22/05/2021 09:35h
+            // Leonardo Metelis 
+            // Conexão com o banco de dados ORACLE
+            services.AddScoped<ISamulp_DQC342Repository>(factory =>
+            {
+                return new Samulp_DQC342Repository(Configuration.GetConnectionString("MY_SQL_CONNECTIONSTRING"));
+            });       
+
+        }
+          
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseHsts();
+            }
+                     
+
+            // 25/05/2021 15:02h 
+            // Leonardo Metelis
+            // Enable static files middleware.
+            // Habilitar a edição do Swagger para se trabalhar com o custom.css
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
+
+            // Habilitar o middleware para servir o Swagger gerado como um endpoint JSON
+            app.UseSwagger();
+
+            // Habilitar o middleware para servir o swagger-ui (HTML, JS, CSS, etc.), 
+            // Especificando o Endpoint JSON Swagger.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "RESTFUL.API");                
+                c.RoutePrefix = string.Empty; //Adicione algum proefixo da URL caso queira
+            });
+                        
+
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseStaticFiles();
+
+            // ativando cors
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            // ativando a geração do token
+            //AtivarGeracaoTokenAcesso(app);                        
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+            app.UseAuthentication();
+
+
+            app.UseMvc();
+        }
+
+    }
+}

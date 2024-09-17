@@ -1,0 +1,562 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SUMUP.API</name>
+    </assembly>
+    <members>
+        <member name="M:SUMUP.API.Controllers.PreCheckStationsController.Get_CHECKSTATIONS(System.String,System.String,System.String)">
+            <summary>
+            Return the CHECK STATIONS for the MO_SN, MODEL and STATION. Show the STATIONS in the process where the piece did not pass.
+            </summary>
+            <param name="MO_SN">The Serial NO of the desired information teste</param>
+            <param name="MODEL">The MODEL of the desired information</param>
+            <param name="STATION">The STATION to look back and get the information</param>
+            <returns>A string response about stations</returns>  
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>        
+        </member>
+        <member name="M:SUMUP.API.Controllers.RepairController.GetRepair(System.String)">
+            <summary>
+            Retrieve the information by their SN about Repair.
+            </summary>
+            <param name="MO_SN">The Serial NO of the desired information</param>
+            <returns>A table with values</returns>        
+            <response code="204">Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.RepairModelController.GetModelRepair(System.String,System.String,System.String)">
+            <summary>
+            Retrieve the information by their MODEL about Repair. Inform de Date in format mm/dd/yyyy. Example: 05/01/2021 to 05/05/2021. This can take a several time. 
+            </summary>
+            <param name="MODEL">The Model of the desired information</param>
+            <param name="DATA_INI">The first Date to search the MODEL information</param>
+            <param name="DATA_END">The last Date to search the MODEL information</param>
+            <returns>A list with values</returns>     
+            <returns>A list with values about the STATIONS</returns>  
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.SNController.Get(System.String)">
+            <summary>
+            Retrieve the information by their SN.
+            </summary>
+            <param name="MO_SN">The Serial NO of the desired information</param>
+            <returns>A table with values</returns>      
+            <returns>A list with values about the STATIONS</returns>  
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.SNController.Get_SN_MODEL_STATION(System.String,System.String,System.String)">
+            <summary>
+            Retrieve the information by their SN, MODEL AND STATION.
+            </summary>
+            <param name="MO_SN">The Serial NO of the desired information</param>
+            <param name="MODEL">The MODEL of the desired information</param>
+            <param name="STATION">The STATION of the desired information</param>
+            <returns>A table with values</returns>   
+            <returns>A list with values about the STATIONS</returns>  
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.SN_ModelStationController.GetDateModel(System.String,System.String,System.String)">
+            <summary>
+            Retrieve the information by their MODEL about SN. Inform de Date in format mm/dd/yyyy. Example: 05/02/2021 to 05/02/2021. This can take a several time. The limit to a search is 10 thousand rows without a crash.
+            </summary>
+            <param name="MODEL">The Model of the desired information</param>
+            <param name="DATA_INI">The first Date to search the MODEL information</param>
+            <param name="DATA_END">The last Date to search the MODEL information</param>
+            <returns>A list with values</returns>   
+            <returns>A list with values about the STATIONS</returns>  
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.UsersTokenGenerateController.GenerateTokenAccess(SUMUP.API.Models.Users)">
+            <summary>
+            Generate token acess to users. To get access to another API´s in this project.
+            </summary>        
+            <returns>A string value</returns>        
+            <response code="204">Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Error!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="T:SUMUP.API.Models.CheckStations">
+            <summary>
+            Model to retrieve information for CheckStations.
+            </summary>    
+            <returns>A list with values generate from a string sql.</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.CheckStations.RESULTADO">
+            <summary>
+            RESULT to expression
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="T:SUMUP.API.Models.DQC31">
+            <summary>
+            RESULT to expression
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="T:SUMUP.API.Models.ListRepairbyModel">
+            <summary>
+            Model to retrieve information for Repairs
+            </summary>    
+            <returns>A list with values generate from a string sql.</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.BARCODE">
+            <summary>
+            The BARCODE number to a Item in repair.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.STATION">
+            <summary>
+            The STATION number to a Item in repair. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.BOARD">
+            <summary>
+            The BOARD number to a Item in repair. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.INSP_DATE">
+            <summary>
+            The date of inspection to repair.
+            </summary>    
+            <returns>datetime value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.SECTION">
+            <summary>
+            The section in production.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.DEF_ITEM">
+            <summary>
+            The definition to a item.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.DEF_CODE">
+            <summary>
+            The definition code to a item.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.DEF_ITEM_CHINESE">
+            <summary>
+            The description to a error for an component to China.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.ROOT_CAUSE">
+            <summary>
+            The Room cause to a Item. Always nulll.
+            </summary>    
+            <returns>number value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.CORRECTIVE_ACTIONS">
+            <summary>
+            The Corrective Actions cause to a Item. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.CAUSE_CD">
+            <summary>
+            The Cause CD to a Item. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.ACTION_CD">
+            <summary>
+            The Action CD to a Item. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.CAUSE_CD_GROUP">
+            <summary>
+            The Cause CD Group to a Item. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.WO_NO">
+            <summary>
+            The WO_NO number to a Item. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.ListRepairbyModel.LOCATION">
+            <summary>
+            The Location to a Item.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="T:SUMUP.API.Models.Samulp_DQC021">
+            <summary>
+            Table to retrieve information from repair. Table origin in production: DQC021.
+            </summary>    
+            <returns>A table with values</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.MADE_AREA">
+            <summary>
+            The area in production. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DEPT">
+            <summary>
+            The departament to the area in production. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.STATION">
+            <summary>
+            The station in production. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.MODEL">
+            <summary>
+            The model in production. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.BOARD">
+            <summary>
+            The name boarad in production. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.INSP_DATE">
+            <summary>
+            The date of inspection to repair.
+            </summary>    
+            <returns>datetime value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.SECTION">
+            <summary>
+            The section in production.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DEF_ITEM">
+            <summary>
+            The definition to a item.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DEF_CODE">
+            <summary>
+            The definition code to a item.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DEF_ITEM_CHINESE">
+            <summary>
+            The description to a error for an component to China.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DEF_QTY">
+            <summary>
+            The quantity define to a item. Always in 1. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DEGREE">
+            <summary>
+            The degre define to a item. Always in M. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.LAST_UPD">
+            <summary>
+            The last update date of inspection to repair.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.UID1">
+            <summary>
+            The UID to item in production.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DEF_QTY_R">
+            <summary>
+            The definition quantity R. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DEF_TEST_ITEM">
+            <summary>
+            The definition test to a Item. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DEF_POINT">
+            <summary>
+            The definition Point to a Item. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.ROOT_CAUSE">
+            <summary>
+            The Room cause to a Item. Always nulll.
+            </summary>    
+            <returns>number value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.CORRECTIVE_ACTIONS">
+            <summary>
+            The Corrective Actions cause to a Item. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.CAUSE_CD">
+            <summary>
+            The Cause CD to a Item. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.ACTION_CD">
+            <summary>
+            The Action CD to a Item. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.CAUSE_CD_GROUP">
+            <summary>
+            The Cause CD Group to a Item. Always nulll.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.WO_NO">
+            <summary>
+            The WO_NO number to a Item. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.MO_SR">
+            <summary>
+            The MO_SR number to a Item.Always in 1. 
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.LOCATION">
+            <summary>
+            The Location to a Item.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.BARCODE">
+            <summary>
+            The Barcode Number to a Item.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.NOTE">
+            <summary>
+            The Note Number to a Item.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DEF_PARTS_DESC">
+            <summary>
+            The Define Parts Description to a Item. Always in *.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.UID1_DEF_ITEM">
+            <summary>
+            The UID1 Define to a Item. Always null.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC021.DATE_DEF_ITEM">
+            <summary>
+            The Date Define to a Item. Always null.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="T:SUMUP.API.Models.Samulp_DQC342">
+            <summary>
+            Table to retrieve information from production line. Table origin in production: DQC342.
+            </summary>    
+            <returns>A table with values</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.SER_SN">
+            <summary>
+            SERIAL NO for a item in production. This number is out of a piece.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.MO_SN">
+            <summary>
+            MONO for a item in production. This number is in the piece. To SAMUP can be 062040010009.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.JO_NO">
+            <summary>
+            JONO for a item in production.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.MODEL">
+            <summary>
+            MODEL for a item in production. To SAMUP can be RUYPPST, RUYPFUL, RUYPS01 and RUYPCLE.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.M_CUST">
+            <summary>
+            CUSTOMER CODE for a item in production.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.LINE_NO">
+            <summary>
+            LINE name for production.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.STATION">
+            <summary>
+            STATION name for production. A piece can pass or not for a station. 
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.DEF_ITEM">
+            <summary>
+            DEF_ITEM is the status. If a piece pass without erros, the result is OK.  
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.TEST_UID">
+            <summary>
+            DEF_ITEM is the name of the test. To NKG in MANAUS is ERP.  
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.TEST_DTTM">
+            <summary>
+            The Date when the piece pass by the LINE.
+            </summary>    
+            <returns>Date Time</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.SECTION">
+            <summary>
+            The SECTION or phase on process.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.INSP_DT">
+            <summary>
+            The INSPECTION DATE. 
+            </summary>    
+            <returns>Date Time</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.PROCESS_CD">
+            <summary>
+            Null value.
+            </summary>    
+            <returns>null value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.LAST_UPD">
+            <summary>
+            The LAST UPDATE. 
+            </summary>    
+            <returns>Date Time</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.UID1">
+            <summary>
+            The local UID. Always ERP.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.CUST_ECO_NO">
+            <summary>
+            Always NULL.
+            </summary>    
+            <returns>null value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.PROD_TYPE">
+            <summary>
+            The name of local production.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.LOCATION">
+            <summary>
+            The location machine in production.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.SN_TYPE">
+            <summary>
+            The name of smt piece.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Samulp_DQC342.RMA">
+            <summary>
+            Always in 0 value.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="T:SUMUP.API.Models.Users">
+            <summary>
+            Model to retrieve information for Token. 
+            </summary>    
+            <returns>A list with values generate from a string sql.</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Users.Username">
+            <summary>
+            Username internal define to generate token Acess: NKG_Taiwan.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Users.Password">
+            <summary>
+            Password internal define to generate token Acess: NGK@2505_21. 
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Users.Role">
+            <summary>
+            Role internal to generate token Acess: manager.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="T:SUMUP.API.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SUMUP.API.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SUMUP.API.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>

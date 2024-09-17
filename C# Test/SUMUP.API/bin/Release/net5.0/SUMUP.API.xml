@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SUMUP.API</name>
+    </assembly>
+    <members>
+        <member name="M:SUMUP.API.Controllers.ProdutosController.ListarProdutos">
+            <summary>
+            Recupera informações de todos os Produto ordernados pelo Nome.
+            </summary>        
+            <returns>Uma tabela com valores</returns>      
+            <returns>Uma lista de todos os PRODUTO</returns>  
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.ProdutosController.GetDescricao(System.String)">
+            <summary>
+            Pesquisa um Produto pelo Nome especificado.
+            </summary>
+            <param name="Descricao">A Descrição do produto desejado</param>
+            <returns>A table with values</returns>      
+            <returns>Uma lista de itens de PRODUTO</returns>  
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.QProdController.DeleteProduto(System.String)">
+            <summary>
+            Deleta um item da tabela Produto pelo Nome. 
+            </summary>        
+            <returns>Sem dados a retornar</returns>              
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.QProdController.Putroduto(System.String,System.String,System.Double,System.DateTime,System.Int32,SUMUP.API.Models.Produto)">
+            <summary>
+            Edita um item da tabela Produto pelo Nome. 
+            </summary>        
+            <returns>Sem dados a retornar</returns>              
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.QProdController.PostProduto(System.String,System.String,System.Double,System.DateTime,System.Int32,SUMUP.API.Models.Produto)">
+            <summary>
+            SALVA/INSERE um item na tabela Produto pelo Nome. 
+            </summary>        
+            <returns>Sem dados a retornar</returns>              
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.SNController.Get(System.String)">
+            <summary>
+            Pesquisa um Produto pelo Nome especificado.
+            </summary>
+            <param name="Nome">O Nome do produto desejado</param>
+            <returns>A table with values</returns>      
+            <returns>Uma lista de itens de PRODUTO</returns>  
+            <response code="204">No Content. Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Not Found!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="M:SUMUP.API.Controllers.UsersTokenGenerateController.GenerateTokenAccess(SUMUP.API.Models.Users)">
+            <summary>
+            Generate token acess to users. To get access to another API´s in this project.
+            </summary>        
+            <returns>A string value</returns>        
+            <response code="204">Data Not Found for the especifications.</response>
+            <response code="400">Bad Request.</response>
+            <response code="404">Error - Data Error!</response>
+            <response code="500">Exception Ocorr to receive data. Internal server error".</response>
+        </member>
+        <member name="P:SUMUP.API.Models.Produto.Nome">
+            <summary>
+            Nome único do produto.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Produto.Descricao">
+            <summary>
+            Descrição do produto.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Produto.Preco">
+            <summary>
+            Preço do produto.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Produto.Data_da_validade">
+            <summary>
+            Data de Validade do produto.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Produto.Imagem">
+            <summary>
+            Imagem do produto.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Produto.Categoria">
+            <summary>
+            Categoria do produto.
+            </summary>    
+            <returns>string value</returns> 
+        </member>
+        <member name="T:SUMUP.API.Models.Users">
+            <summary>
+            Model to retrieve information for Token. 
+            </summary>    
+            <returns>A list with values generate from a string sql.</returns> 
+        </member>
+        <member name="P:SUMUP.API.Models.Users.Username">
+            <summary>
+            Username internal define to generate token Acess: NKG_Taiwan.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Users.Password">
+            <summary>
+            Password internal define to generate token Acess: NGK@2505_21. 
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="P:SUMUP.API.Models.Users.Role">
+            <summary>
+            Role internal to generate token Acess: manager.
+            </summary>    
+            <returns>string value</returns>
+        </member>
+        <member name="T:SUMUP.API.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SUMUP.API.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SUMUP.API.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>
